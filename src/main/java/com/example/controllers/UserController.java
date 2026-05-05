@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class UserController {
 
@@ -31,6 +32,14 @@ public class UserController {
 
     @FXML
     private TableView<User> userTable;
+
+    @FXML
+    void initialize() {
+        System.out.println("Init.....");
+        this.userCol.setCellValueFactory(new PropertyValueFactory<>("user"));
+        this.passCol.setCellValueFactory(new PropertyValueFactory<>("pass"));
+        this.roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
+    }
 
     @FXML
     void onClickAddButton(ActionEvent event) {
