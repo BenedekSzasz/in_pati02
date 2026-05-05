@@ -3,5 +3,8 @@ module com.example {
     requires javafx.fxml;
     requires transitive javafx.graphics;
     opens com.example to javafx.fxml;
+    opens com.example.controllers to javafx.fxml;
+    // opens com.example.models to javafx.fxml;
     exports com.example;
+    
 }
