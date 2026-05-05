@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import com.example.App;
+import com.example.models.User;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,25 +12,25 @@ import javafx.scene.control.TextField;
 public class UserController {
 
     @FXML
-    private TableColumn<?, ?> passCol;
+    private TableColumn<User, String> passCol;
 
     @FXML
     private TextField passField;
 
     @FXML
-    private TableColumn<?, ?> roleCol;
+    private TableColumn<User, String> roleCol;
 
     @FXML
     private TextField roleField;
 
     @FXML
-    private TableColumn<?, ?> userCol;
+    private TableColumn<User, String> userCol;
 
     @FXML
     private TextField userField;
 
     @FXML
-    private TableView<?> userTable;
+    private TableView<User> userTable;
 
     @FXML
     void onClickAddButton(ActionEvent event) {
