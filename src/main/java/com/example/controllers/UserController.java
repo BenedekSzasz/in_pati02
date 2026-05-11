@@ -67,7 +67,8 @@ public class UserController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Hiba");
             alert.setHeaderText("Hiba a felhasználónev megadása kötelező!");
-            alert.show();
+            alert.setContentText("A felhasználónév kötelező!");
+            alert.showAndWait();
             return;
         }
 
