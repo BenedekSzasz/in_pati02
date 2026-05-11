@@ -8,6 +8,7 @@ import com.example.models.User;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -63,6 +64,10 @@ public class UserController {
     void startAdd(){
         if(!isValidFields()) {
             System.err.println("Hiba a felhasználónév megadása kötelező!");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Hiba");
+            alert.setHeaderText("Hiba a felhasználónev megadása kötelező!");
+            alert.show();
             return;
         }
 
