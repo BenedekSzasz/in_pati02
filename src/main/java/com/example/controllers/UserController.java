@@ -61,6 +61,11 @@ public class UserController {
     }
 
     void startAdd(){
+        if(!isValidFields()) {
+            System.err.println("Hiba a felhasználónév megadása kötelező!");
+            return;
+        }
+
         User user = new User();
         user.setUser(userField.getText());
         user.setPass(passField.getText());
