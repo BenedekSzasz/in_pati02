@@ -1,6 +1,9 @@
 package com.example.controllers;
 
+import java.util.List;
+
 import com.example.App;
+import com.example.models.Storage;
 import com.example.models.User;
 
 import javafx.event.ActionEvent;
@@ -39,11 +42,30 @@ public class UserController {
         this.userCol.setCellValueFactory(new PropertyValueFactory<>("user"));
         this.passCol.setCellValueFactory(new PropertyValueFactory<>("pass"));
         this.roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
+
+        List<User> userList = Storage.readContent();
+        userTable.getItems().addAll(userList);
+    }
+
+    boolean isValidFields() {
+        boolean valid = true;
+        if(userField.getText().isEmpty()) {
+            valid = false;
+        }
+        return valid;
     }
 
     @FXML
     void onClickAddButton(ActionEvent event) {
+        startAdd();
+    }
 
+    void startAdd(){
+        User user = new User();
+        user.setUser(userField.getText());
+        user.setPass(passField.getText());
+        user.setRole(roleField.getText());
+        userTable.getItems().add(user);
     }
 
     @FXML

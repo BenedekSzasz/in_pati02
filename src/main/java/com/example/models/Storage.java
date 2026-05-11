@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Storage {
-    public static List<User> readContent() throws FileNotFoundException{
+    public static List<User> readContent() {
         try {
             return tryReadContent();
         } catch (FileNotFoundException e) {
@@ -16,7 +16,7 @@ public class Storage {
         }
     }
 
-    public static List<User> tryReadContent() throws FileNotFoundException{ 
+    private static List<User> tryReadContent() throws FileNotFoundException {
         List<User> userList = new ArrayList<>();
         File file = new File("users.txt");
         try (Scanner sc = new Scanner(file)) {
