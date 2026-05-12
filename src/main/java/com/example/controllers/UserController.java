@@ -48,9 +48,50 @@ public class UserController {
         userTable.getItems().addAll(userList);
     }
 
-    boolean isValidFields() {
+    boolean startValidate() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Hiba a felhasználónev megadása kötelező!");
+        boolean valid = true;
+        if(!isValidUserField()) {
+            showError("A felhasználónev megadása kötelező");
+            valid = false;
+        } 
+        if(!isValidPassField()) {
+            showError("A jelszö megadása kötelező");
+            valid = false;
+        } 
+        if(!isValidRoleField()) {
+            showError("A szerep megadása kötelező");
+            valid = false;
+        } 
+        return valid;
+    }
+
+    void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Hibás bevitel!");
+        System.err.println("Hiba!" + msg);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+    boolean isValidUserField() {
         boolean valid = true;
         if(userField.getText().isEmpty()) {
+            valid = false;
+        }
+        return valid;
+    }
+    boolean isValidPassField() {
+        boolean valid = true;
+        if(passField.getText().isEmpty()) {
+            valid = false;
+        }
+        return valid;
+    }
+    boolean isValidRoleField() {
+        boolean valid = true;
+        if(roleField.getText().isEmpty()) {
             valid = false;
         }
         return valid;
@@ -62,21 +103,20 @@ public class UserController {
     }
 
     void startAdd(){
-        if(!isValidFields()) {
-            System.err.println("Hiba a felhasználónév megadása kötelező!");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Hiba");
-            alert.setHeaderText("Hiba a felhasználónev megadása kötelező!");
-            alert.setContentText("A felhasználónév kötelező!");
-            alert.showAndWait();
-            return;
-        }
-
+        startValidate();
         User user = new User();
         user.setUser(userField.getText());
         user.setPass(passField.getText());
         user.setRole(roleField.getText());
         userTable.getItems().add(user);
+        ClearFields();
+    }
+
+
+    void ClearFields() {
+        userField.setText("");
+        passField.setText("");
+        roleField.setText("");
     }
 
     @FXML

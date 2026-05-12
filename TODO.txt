@@ -1,0 +1,10 @@
+TODO: Módosítás
+
+TODO: Törlés
+
+TODO: Jelszómegfelelés ellenőrzése
+
+TODO: Jelszó generátor
+
+TODO: refaktorálás: isValidUserField()
+       minden ilyen field egy tömbbe, és a validáló végig megy rajta
