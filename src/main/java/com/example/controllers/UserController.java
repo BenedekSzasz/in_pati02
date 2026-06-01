@@ -3,6 +3,7 @@ package com.example.controllers;
 import java.util.List;
 
 import com.example.App;
+import com.example.models.Password;
 import com.example.models.Storage;
 import com.example.models.User;
 
@@ -13,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class UserController {
 
@@ -39,7 +41,7 @@ public class UserController {
 
     @FXML
     void initialize() {
-        System.out.println("Init.....");
+        System.out.println("Init...");
         this.userCol.setCellValueFactory(new PropertyValueFactory<>("user"));
         this.passCol.setCellValueFactory(new PropertyValueFactory<>("pass"));
         this.roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
@@ -48,35 +50,80 @@ public class UserController {
         userTable.getItems().addAll(userList);
     }
 
-    boolean isValidFields() {
-        boolean valid = true;
-        if(userField.getText().isEmpty()) {
-            valid = false;
-        }
-        return valid;
-    }
-
     @FXML
     void onClickAddButton(ActionEvent event) {
         startAdd();
     }
 
-    void startAdd(){
-        if(!isValidFields()) {
-            System.err.println("Hiba a felhasználónév megadása kötelező!");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Hiba");
-            alert.setHeaderText("Hiba a felhasználónev megadása kötelező!");
-            alert.setContentText("A felhasználónév kötelező!");
-            alert.showAndWait();
+    void startAdd() {
+        if(!startValidate()) {
             return;
         }
-
         User user = new User();
         user.setUser(userField.getText());
         user.setPass(passField.getText());
         user.setRole(roleField.getText());
         userTable.getItems().add(user);
+
+        clearFields();
+    }
+
+    boolean startValidate() {
+        boolean valid = true;
+        if (!isValidUserField()) {
+            showError("A felhasználónév kötelező!");
+            valid = false;
+        }
+        if (!isValidPassField()) {
+            showError("Érvénytelen jelszó!");
+            valid = false;
+        }
+        if (!isValidRoleField()) {
+            showError("A szerep megadása kötelező");
+            valid = false;
+        }
+        return valid;
+    }
+
+    void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Hibás bevitel!");
+        System.err.println("Hiba!" + msg);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+    boolean isValidUserField() {
+        boolean valid = true;
+        if (userField.getText().isEmpty()) {
+            valid = false;
+        }
+        return valid;
+    }
+
+    boolean isValidPassField() {
+        boolean valid = true;
+        if (passField.getText().isEmpty()) {
+            valid = false;
+        }
+        if(!Password.isValid(passField.getText())) {
+            valid = false;
+        }
+        return valid;
+    }
+
+    boolean isValidRoleField() {
+        boolean valid = true;
+        if (roleField.getText().isEmpty()) {
+            valid = false;
+        }
+        return valid;
+    }
+
+    void clearFields() {
+        userField.setText("");
+        passField.setText("");
+        roleField.setText("");
     }
 
     @FXML
@@ -86,17 +133,57 @@ public class UserController {
 
     @FXML
     void onClickDelButton(ActionEvent event) {
-
+        int index = userTable.getSelectionModel().getSelectedIndex();
+        userTable.getItems().remove(index);
     }
 
     @FXML
     void onClickModifyButton(ActionEvent event) {
+        startModify();
+    }
 
+    void startModify() {
+        if(!startValidate()) {
+            return;
+        }        
+        System.out.println("Módosít...");
+        int index = userTable.getSelectionModel().getFocusedIndex();
+        System.out.println(index);
+        User user = new User();
+        user.setUser(userField.getText());
+        user.setPass(passField.getText());
+        user.setRole(roleField.getText());
+
+        userTable.getItems().set(index, user);
+        userTable.setDisable(false);
+        clearFields();
     }
 
     @FXML
     void onClickSaveButton(ActionEvent event) {
+        Storage.writeContent(userTable.getItems());
+    }
 
+    @FXML
+    void onMouseClicked(MouseEvent event) {
+        if(event.getClickCount() == 2) {
+            User user = userTable.getSelectionModel().getSelectedItem();
+            userField.setText(user.getUser());
+            passField.setText(user.getPass());
+            roleField.setText(user.getRole());
+            userTable.setDisable(true);
+        }
+    }
+    
+    @FXML
+    void onClickPassGenerateButton(ActionEvent event) {
+        startPasswordGenerating();
+    }
+
+    void startPasswordGenerating() {
+        boolean[] setup = {true, true, true, true};
+        String newPass = Password.generate(setup, 6);
+        passField.setText(newPass);
     }
 
 }

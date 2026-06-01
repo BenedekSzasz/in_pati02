@@ -1,9 +1,9 @@
 package com.example.controllers;
-import javafx.fxml.FXML;
 
 import com.example.App;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 
 public class MainController {
 

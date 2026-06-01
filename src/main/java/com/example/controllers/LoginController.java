@@ -1,7 +1,9 @@
 package com.example.controllers;
-
+import javafx.scene.control.Alert.AlertType;
 import com.example.App;
+import com.example.models.Auth;
 
+import javafx.scene.control.Alert;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,11 +14,21 @@ public class LoginController {
     private TextField passwordField;
 
     @FXML
-    private TextField userNameField;
+    private TextField usernameField;
 
     @FXML
     void onClickLoginButton(ActionEvent event) {
-        App.setRoot("mainScene");
+        if(Auth.isValid(usernameField.getText(), passwordField.getText())) {
+            App.setRoot("mainScene");
+        } else{
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Hibás adatok!");
+            alert.setContentText("A felhasználónév vagy a jelszó érvénytelen!");
+            alert.setHeaderText("Azonosítási hiba!");
+            alert.initOwner(App._stage);
+            alert.show();
+        }
+        
     }
 
 }

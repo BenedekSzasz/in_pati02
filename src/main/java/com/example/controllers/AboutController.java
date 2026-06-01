@@ -4,6 +4,7 @@ import com.example.App;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
 public class AboutController {
 
     @FXML
