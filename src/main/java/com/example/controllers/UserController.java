@@ -3,6 +3,7 @@ package com.example.controllers;
 import java.util.List;
 
 import com.example.App;
+import com.example.models.Crypt;
 import com.example.models.Password;
 import com.example.models.Storage;
 import com.example.models.User;
@@ -61,8 +62,14 @@ public class UserController {
         }
         User user = new User();
         user.setUser(userField.getText());
-        user.setPass(passField.getText());
-        user.setRole(roleField.getText());
+
+
+        String clearPass = passField.getText();
+        String salt = Crypt.generateSalt(8);
+        String hash = Crypt.hash(salt + clearPass + salt);
+        user.setPass(salt + "$" + hash);
+
+
         userTable.getItems().add(user);
 
         clearFields();
